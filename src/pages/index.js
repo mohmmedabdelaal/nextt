@@ -1,11 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/Home.module.css';
-import Events from './events';
+import { getFeaturedData } from '../Data';
+import EventList from '../components/EventList';
 
 export default function Home() {
-  return (
-    <div>
-      <Events />
-    </div>
-  );
+  const featuredEvents = getFeaturedData();
+  return <div>
+    <EventList items={featuredEvents}/>
+  </div>;
 }
