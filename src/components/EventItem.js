@@ -13,7 +13,7 @@ function EventItem({ title, location, date, image, id }) {
   const eventLink = `/events/${id}`;
   return (
     <li className={classes.item}>
-      <img src={image} alt={title} className={classes.logo} />
+      <img src={image} alt={title} />
       <div className={classes.content}>
         <div className={classes.summary}>
           <h2>{title}</h2>
