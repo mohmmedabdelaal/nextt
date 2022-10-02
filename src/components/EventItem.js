@@ -1,13 +1,33 @@
-import React from 'react';
+import Link from 'next/link';
+import classes from './EventItem.module.css';
+import Button from '../ui/Button';
 
-function EventItem({ title, description, date, image }) {
+function EventItem({ title, location, date, image, id }) {
+  const readableDate = new Date(date).toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+  const realLocation = location.replace(', ', '\n');
+
+  const eventLink = `/events/${id}`;
   return (
-    <li>
-      <div className="container">
-        <div className="card">
-          <h3>{title}</h3>
-          <p>{description}</p>
-          <img src={image} alt="" />
+    <li className={classes.item}>
+      <img src={image} alt={title} className={classes.logo} />
+      <div className={classes.content}>
+        <div className={classes.summary}>
+          <h2>{title}</h2>
+          <div>
+            <div className={classes.date}>
+              <time>{readableDate}</time>
+            </div>
+            <div className={classes.address}>
+              <address>{realLocation}</address>
+            </div>
+          </div>
+        </div>
+        <div className={classes.actions}>
+          <Button link={eventLink}>To details</Button>
         </div>
       </div>
     </li>
