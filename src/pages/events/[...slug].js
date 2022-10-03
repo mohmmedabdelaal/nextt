@@ -1,45 +1,49 @@
 import { useRouter } from 'next/router';
+import EventList from '../../components/EventList';
 import { getFilteredEvents } from '../../Data';
 
 function FilteredSearchEvents() {
-  const router = useRouter();
-  const slug = router.query.slug;
+  const { query } = useRouter();
+  const slug = query.slug;
+  console.log(slug);
 
   if (!slug) {
     return (
-      <div>
-        <h4>Loading....</h4>
+      <div className="center">
+        <h3>Loading....</h3>
       </div>
     );
   }
+  const yearSlug = slug[0];
+  const monthSlug = slug[1];
 
-  const yearFiltered = slug[0];
-  const monthFiltered = slug[1];
+  const numYear = +yearSlug;
+  const numMonth = +monthSlug;
 
-  const numYear = +yearFiltered;
-  const numMonth = +monthFiltered;
-
-  if (isNaN(numYear) || isNaN(numMonth) || numYear > 2040 || numMonth > 12) {
+  if (isNaN(numYear) || isNaN(numMonth) || numYear > 2035 || numMonth > 12) {
     return (
-      <div>
-        <h4>Failed to have Events</h4>
+      <div className="center">
+        <h3>No Events have found</h3>
       </div>
     );
   }
 
-  const filteredEvents = getFilteredEvents({
-    year: numYear,
-    month: numMonth,
-  });
+  const filteredEvents = getFilteredEvents({ year: numYear, month: numMonth });
 
   if (!filteredEvents || filteredEvents.length === 0) {
-    <div>
-      <h4>No filtered events found</h4>
-    </div>;
+    return (
+      <div className="center">
+        <h3>Found no Filtered Events</h3>
+      </div>
+    );
   }
-  console.log(filteredEvents);
 
-  return <div>FilteredSearchEvents</div>;
+  console.log(filteredEvents);
+  return (
+    <div>
+      <EventList items={filteredEvents} />
+    </div>
+  );
 }
 
 export default FilteredSearchEvents;
