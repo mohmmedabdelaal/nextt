@@ -1,9 +1,7 @@
 import React from 'react';
 
-function DeepDown() {
-  return <div>
-  
-  </div>;
+function FilteredSearchEvents() {
+  return <div>FilteredSearchEvents</div>;
 }
 
-export default DeepDown;
+export default FilteredSearchEvents;
