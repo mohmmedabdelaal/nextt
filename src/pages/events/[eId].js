@@ -1,18 +1,14 @@
-import { useRouter } from 'next/router';
 import { Fragment } from 'react';
-import { getDataById } from '../../Data';
+
+import { getAllEvents } from '../../helpers/api-utils';
 import EventContent from '../../event-detail/event-content';
 import EventSummary from '../../event-detail/event-summary';
 import EventLogistics from '../../event-detail/event-logistics';
-import EventLogisticsItem from '../../event-detail/logistics-item';
+import { getDataById } from '../../helpers/api-utils';
 
-function SingleEvent() {
-  const { query } = useRouter();
-  if (query.eId === undefined) {
-    return <div>Loading...</div>;
-  }
-  const singleEvent = getDataById(query.eId);
-  const { title, description, location, date, image } = singleEvent;
+function SingleEvent({ singleEvent }) {
+  const eventSingleId = singleEvent;
+  const { title, description, location, date, image } = eventSingleId;
 
   return (
     <Fragment>
@@ -28,6 +24,29 @@ function SingleEvent() {
       </EventContent>
     </Fragment>
   );
+}
+
+export async function getStaticPaths() {
+  const allEvents = await getAllEvents();
+
+  const paths = allEvents.map((event) => ({ params: { eId: event.id } }));
+  return {
+    paths: paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const eventId = params.eId;
+
+  const event = await getDataById(eventId);
+
+  return {
+    props: {
+      singleEvent: event,
+    },
+    revalidate: 20,
+  };
 }
 
 export default SingleEvent;
